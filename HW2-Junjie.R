@@ -15,12 +15,12 @@ names(singles)<-c('movienum',as.character(genre$V1))
 singles[,2:20] <- movies[,6:24]
 u.big2<-merge(u.big,singles)
 
+colnames(u.big2)<-c('movienum','usernum','rating','transID','age','gender','occ','ZIP','unknown','Action','Adventure','Animation','Children','Comedy','Crime','Documentary','Drama','Fantasy','Noir','Horror','Musical','Mystery','Romance','SciFi','Thriller','War','Western')
+u.big2
 
 test<-sample(1:nrow(u.big2),5000)
 utest<-u.big2[test,]
 utrain<-u.big2[-test,]
-colnames(u.big2)<-c('movienum','usernum','rating','transID','age','gender','occ','ZIP','unknown','Action','Adventure','Animation','Children','Comedy','Crime','Documentary','Drama','Fantasy','Noir','Horror','Musical','Mystery','Romance','SciFi','Thriller','War','Western')
-u.big2
 lmout<-lm(rating~age+gender+occ+unknown+Action+Adventure+Animation+Children+Comedy+Crime+Documentary+Drama+Fantasy+Noir+Horror+Musical+Mystery+Romance+SciFi+Thriller+War+Western,data=utrain)
 preds<-predict(lmout,utest)
 mean(abs(preds-utest$rating))    
