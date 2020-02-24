@@ -22,10 +22,10 @@ u.big2$ZIP <-as.character(u.big2$ZIP)
 u.big2$ZIP<-substr(u.big2$ZIP,start=1, stop =2)
 u.big2$ZIP<-as.factor(u.big2$ZIP)
 
-colnames(u.big2)<-c('movienum','usernum','rating','transID','age','gender','occ','ZIP',
-                   'unknown','Action','Adventure','Animation','Children','Comedy',
-                   'Crime','Documentary','Drama','Fantasy','Noir','Horror','Musical',
-                   'Mystery','Romance','SciFi','Thriller','War','Western')
+#colnames(u.big2)<-c('movienum','usernum','rating','transID','age','gender','occ','ZIP',
+#                  'unknown','Action','Adventure','Animation','Children','Comedy',
+#                   'Crime','Documentary','Drama','Fantasy','Noir','Horror','Musical',
+#                  'Mystery','Romance','SciFi','Thriller','War','Western')
 
 u<-u.big2[,c(3,5:27)]
 
