@@ -73,17 +73,19 @@ utest<-u.big2[test,]
 utrain<-u.big2[-test,]
 lmout1<-lm(rating~age+gender+occ+unknown+Action+Adventure+Animation+Children+Comedy+Crime+Documentary+Drama+Fantasy+Noir+Horror+Musical+Mystery+Romance+SciFi+Thriller+War+Western+new+user_mean+movie_mean,data=utrain)
 preds1<-predict(lmout1,utest)
-mean(abs(preds1-utest$rating))  #0.7
+mean(abs(preds1-utest$rating))  #0.706
 
-u.big2[,"age_gender"]<-(u.big2$age)*(u.big2$gender)
-u.big2
+#u.big2[,"age_gender"]<-(u.big2$age)*(u.big2$gender)
+#u.big2
 
+"""
 test<-sample(1:nrow(u.big2),5000)
 utest<-u.big2[test,]
 utrain<-u.big2[-test,]
 lmout1<-lm(rating~gender+occ+unknown+Action+Adventure+Animation+Children+Comedy+Crime+Documentary+Drama+Fantasy+Noir+Horror+Musical+Mystery+Romance+SciFi+Thriller+War+Western+new+age_square,data=utrain)
 preds1<-predict(lmout1,utest)
 mean(abs(preds1-utest$rating))
+"""
 
 gender_dummy<-factorToDummies(u.big2$gender,"gender")
 u.big2[,"gender_dummy"]<-gender_dummy
@@ -91,9 +93,23 @@ u.big2[,"age_gender"]<-u.big2[,"gender_dummy"]*u.big2[,"age"]
 test<-sample(1:nrow(u.big2),5000)
 utest<-u.big2[test,]
 utrain<-u.big2[-test,]
-lmout1<-lm(rating~age+gender+occ+unknown+Action+Adventure+Animation+Children+Comedy+Crime+Documentary+Drama+Fantasy+Noir+Horror+Musical+Mystery+Romance+SciFi+Thriller+War+Western+new+age_square+age_gender,data=utrain)
+lmout1<-lm(rating~age+gender+occ+unknown+Action+Adventure+Animation+Children+Comedy+Crime+Documentary+Drama+Fantasy+Noir+Horror+Musical+Mystery+Romance+SciFi+Thriller+War+Western+new+user_mean+movie_mean+age_gender,data=utrain)
 preds1<-predict(lmout1,utest)
-mean(abs(preds1-utest$rating))
+mean(abs(preds1-utest$rating)) #0.69
+
+zip <- as.character(u.big2$ZIP)
+u.big2$ZIP_first2 <- substr(zip,1,2)  #take first 2 digits
+test<-sample(1:nrow(u.big2),5000)
+utest<-u.big2[test,]
+utrain<-u.big2[-test,]
+lmout1<-lm(rating~gender+occ+unknown+Action+Adventure+Animation+Children+Comedy+Crime+Documentary+Drama+Fantasy+Noir+Horror+Musical+Mystery+Romance+SciFi+Thriller+War+Western+new+user_mean+movie_mean+age_gender+ZIP_first2,data=utrain)
+preds1<-predict(lmout1,utest)
+mean(abs(preds1-utest$rating))  #0.689
+
+#rectools
+library('rectools')
+aa<-ratings[,-4]
+nmfout1<-trainReco(aa,rnk=10,nmf=TRUE)
 
 #lasso
 mm<-factorToDummies(u.big2$occ,"occ")
