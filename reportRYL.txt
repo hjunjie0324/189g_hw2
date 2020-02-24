@@ -1,0 +1,17 @@
+lm:
+First of all, we made 19 new columns to display different genres to the merged dataset(and we know TA will test our 
+code with a data file contains those new columns). Then we restored ZIP columns with only first two digits. The reason 
+is that we want to do dimention reduction and ZIP codes are arranged so the first two digits could still give us region 
+information. To do so, we converted ZIP column data to be strings and only keep the first two characters and converted 
+them back to factor. Then we attempted to do linear regression with those basic features besides userID and movieID as 
+our predictors. The reason we did not include userID and movieID was we believed those two features would not affect rating
+a lot(graph?) since userID and movieID only stand for users and items general, which also are represented by other features 
+that have stronger relation with rating. With these basic features, cross validation gave us a mean absolute prediction error
+of 0.889 which was kind off too much. To improve the accurancy of prediction, we added two new features as our predictors: mean
+of user rating and mean of movie rating. The reason was we found some users tend to give higher rating than others while some
+movies tends to get higher rating than others, which was also ture in real world. And we knew that people in different ages
+had different preference of movies and males and females had different preference as well. Then we attempted to combine these two
+features by multiplying their values (gender is dummy with value 0 and 1). By using updated predictors, we got a MAPE of 0.697
+which was better than previous one.
+
+NMF:
