@@ -120,7 +120,9 @@ lmFinalModel <- function(u.big.tst){
   utrain<-u.big2[-test,]
   lmout1<-lm(rating~occ+unknown+Action+Adventure+Animation+Children+Comedy+Crime+Documentary+Drama+Fantasy+Noir+Horror+Musical+Mystery+Romance+SciFi+Thriller+War+Western+new+user_mean+movie_mean+age_gender+ZIP_first2,data=utrain)
   preds1<-predict(lmout1,utest)
-  mean(abs(preds1-utest$rating))  #0.697
+  error<-MAPE(preds1,utest$rating)
+  error
+  #mean(abs(preds1-utest$rating))  #0.697
 }
 
 nmfFinalModel <- function(u.big.tst){
