@@ -1,70 +1,40 @@
 setwd('C:/omsi-master/ml-100k')
-ratings <- read.table('u.data')
-names(ratings) <- c('userId','movieId','rating','timestamp')
-#head(ratings)
-
-m<-read.csv('movies.csv',sep=',',header=T)
-head(m)
-
-demog <- read.table('u.user',sep='|')
+ratings <- read.table('u.data',header=F)
+names(ratings) <- c('usernum','movienum','rating','transID')
+demog<-read.table('u.user',sep='|')
 names(demog)<-c('usernum','age','gender','occ','ZIP')
-#head(demog)
-
 u.big<-merge(ratings,demog,by.x=1,by.y=1)
-head(u.big)
 
-u.new<-merge(u.big,m,by.x=1,by.y=1)
-head(u.new)
+movies <- read.csv('u.item',sep='|',header=F)
+genre <- read.csv('u.genre',sep='|',header=F)
 
-#class(u.big$age)
+nr <- nrow(movies)
+singles <- as.data.frame(matrix(0,ncol=20,nrow=nr))
+singles[,1] <- movies$V1
+names(singles)<-c('movienum',as.character(genre$V1))
+singles[,2:20] <- movies[,6:24]
+u.big2<-merge(u.big,singles)
 
-#lmout1<-lm(rating ~ age+gender,data=u.big)
-#coef(lmout1)
-
-#lmout2<-lm(rating ~ movieId+userId,data=u.big)
-#coef(lmout2)
-
-#lmoutNew<-lm(rating~age+occ,data=u.big)
-#coef(lmoutNew)
-
-#lmout<-lm(age~occ,data=u.big)
-#coef(lmout)
+head(u.big2)
 
 
-#p<-tapply(u.big$rating,u.big$occ,mean)
-#barplot(p)
+u.big2$ZIP <-as.character(u.big2$ZIP)
+u.big2$ZIP<-substr(u.big2$ZIP,start=1, stop =2)
+u.big2$ZIP<-as.factor(u.big2$ZIP)
 
-#u.big$age <- as.factor(u.big$age)
-u.big$gender <- as.factor(u.big$gender)
-u.big$movieId <- as.factor(u.big$movieId)
-u.big$userId <- as.factor(u.big$userId)
+colnames(u.big2)<-c('movienum','usernum','rating','transID','age','gender','occ','ZIP',
+                   'unknown','Action','Adventure','Animation','Children','Comedy',
+                   'Crime','Documentary','Drama','Fantasy','Noir','Horror','Musical',
+                   'Mystery','Romance','SciFi','Thriller','War','Western')
 
+u<-u.big2[,c(3,5:27)]
 
-#lmout3<-lm(rating ~ age+gender,data=u.big)
-#coef(lmout3)
+test<-sample(1:nrow(u),5000)
+utest<-u[test,]
+utrain<-u[-test,]
 
-#lmout3<-lm(rating ~ age+gender,data=u.big)
-#coef(lmout3)
-
-u.big$ZIP <-as.character(u.big$ZIP)
-substr(u.big$ZIP,start=1, stop =2)
-#u.big$ZIP<-(as.numeric(u.big$ZIP))%/%1000
-u.big$ZIP<-as.factor(u.big$ZIP)
-
-lmout<-lm(rating~gender+occ+ZIP+genres,data = u.new)
-head(u.new)
-
-#getPE()
-pe1<-u.new[,c(3,5,6,7,8,10)]
-head(pe1)
-
-#set.seed(9999)
-testidxs<-sample(1:nrow(pe1),5000)
-testset<-pe1[testidxs,]
-trainset<-pe1[-testidxs,]
-lmout<-lm(rating~.,data=pe1)
-predvals<-predict(lmout,testset[,-1])
-mean(abs(predvals-testset[,1]))
-
-#u.big$age <- as.factor(u.big$age)
-#u.big$age <- as.factor(u.big$age)
+lmout<-lm(rating~.,data=utrain)
+preds<-predict(lmout,utest)
+preds
+errorLM<-MAPE(preds,utest$rating)
+errorLM#0.8891619
