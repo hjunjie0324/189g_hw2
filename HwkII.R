@@ -178,8 +178,6 @@ r$train(train_set,opts=c(opts$min,nthread=1,niter=10,nmf=TRUE))
 
 test_set=data_memory(utest$usernum,utest$movienum,index1=TRUE)
 pred=r$predict(test_set,out_memory())
-lmout_ <-lm(rating ~ . , data=covs)
-minresid <- min(lmout_$residuals)
 tmp <- preds1+minresid+pred
 error <- MAPE(tmp,utest$rating)
 
