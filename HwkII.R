@@ -1,6 +1,6 @@
 
 
-lmFinalModel <- function(u.big.tst){
+lmFinalModel <- function(u.big){
   library(recosystem)
   library(regtools)
   u.big2 <- u.big
@@ -61,7 +61,7 @@ lmFinalModel <- function(u.big.tst){
   #mean(abs(preds1-utest$rating))  #0.697
 }
 
-nmfFinalModel <- function(u.big.tst){
+nmfFinalModel <- function(u.big){
 library(recosystem)
 library(regtools)
 u.big2 <- u.big
