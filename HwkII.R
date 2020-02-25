@@ -142,7 +142,6 @@ test_set=data_memory(utest$usernum,utest$movienum,index1=TRUE)
 pred=r$predict(test_set,out_memory())
 tmp <- preds1+minresid+pred
 error<-mean(abs(tmp-utest$rating))
-error
 
 return(error)
 #error<-mean(abs(tmp-utest$rating)
