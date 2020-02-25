@@ -1,9 +1,8 @@
 
 
-lmFinalModel <- function(u.big){
+lmFinalModel <- function(u.big2){
   library(recosystem)
   library(regtools)
-  u.big2 <- u.big
  # u.big <- read.delim("u.big.tst",header = TRUE, sep="\t",dec = ".")
   colnames(u.big2)<-c('movienum','usernum','rating','transID','age','gender','occ','ZIP',
                      'unknown','Action','Adventure','Animation','Children','Comedy',
@@ -61,7 +60,7 @@ lmFinalModel <- function(u.big){
   #mean(abs(preds1-utest$rating))  #0.697
 }
 
-nmfFinalModel <- function(u.big){
+nmfFinalModel <- function(u.big2){
 library(recosystem)
 library(regtools)
 u.big2 <- u.big
